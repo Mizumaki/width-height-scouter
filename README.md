@@ -1,3 +1,12 @@
+
+[MacでiPhone iPadなどのシミュレータでブラウザログを見る方法](https://qiita.com/gosairei1207/items/7433008d78fcc494fe7d)
+
+[iOS Safariでスクロールしただけでリサイズイベントが発生する原因と対処法](https://qiita.com/tonkotsuboy_com/items/d32ec6e7a1f6f592d415)
+
+https://gist.github.com/Yimiprod/7ee176597fef230d1451
+
+https://wemo.tech/470
+
 # cssの種類による違い
 
 ```
