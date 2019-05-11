@@ -1,18 +1,125 @@
 body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 
 #root {
   width: 100%;
   height: 100%;
+  position: relative;
+}
+
+#main {
+  width: 100%;
+  height: 100%;
+  /* 
+    代わりに、height を calc(100% - 50px) とするのもありだが、 
+    そうすると #footerNavi が position: absolute; な関係上、
+    高さの計算が #main と同じレイヤーにいないため
+    #main がいるレイヤーには下に予期しない余白が50px暗黙的に存在することになり気持ち悪いので、
+    padding-bottom のほうが無難か
+  */
+  padding-bottom: 50px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#footerNavi {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: cadetblue;
+  color: white;
+  display: flex;
+  font-size: 14px;
+}
+
+#modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  display: none;
+}
+
+#modal.shown {
+  display: block;
+}
+
+#modal .closeButton {
+  text-align: right;
+  font-size: 30px;
+  padding: .2em .7em;
+}
+
+#modal h2 {
+  color: white;
+  background: none;
+}
+
+#modal textarea {
+  display: block;
+  margin: 0 auto;
+  border: 1px solid white;
+  text-align: center;
+}
+
+#modal .histories {
+  height: 65%;
+  overflow-y: auto;
+  margin: 40px;
+}
+
+#modal .histories p {
+  margin: 1em 0;
+}
+
+.navItem {
+  width: 25%;
+  padding: .2em;
+  text-align: center;
+}
+
+.navItem textarea {
+  width: 100%;
+  text-align: center;
+}
+
+
+.h2 section {
+  padding: 1em 0;
+}
+
+h1 {
+  font-size: 28px;
+  margin-top: .5em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 22px;
+  background: beige;
+  margin: .5em;
+  padding: .3em .5em;
+  color: darkcyan;
+}
+
+h3 {
+  font-size: 20px;
+  text-align: center;
 }
 
 .h2 {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .h2 h2 {
@@ -23,8 +130,4 @@ body {
 .h2 .height {
   text-align: center;
   font-weight: bold;
-}
-
-.h2 section {
-  flex: 1 1 0;
 }
