@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="/manifest.json" />
+  <title>Device Width And Height Scouter</title>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/styles/reset.css">
+  <link rel="stylesheet" type="text/css" href="/styles/main.css">
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run correctly this page.</noscript>
+  <div id='root'>
+    <main>
+      <h1>All width & height</h1>
+
+      <section class="h2" id="window">
+        <h2>window</h2>
+        <section class="outer">
+          <h3>outer</h3>
+          <p>window.outerWidth: </p>
+          <p class="width"></p>
+          <p>window.outerHeight: </p>
+          <p class="height"></p>
+        </section>
+        <section class="inner">
+          <h3>inner</h3>
+          <p>window.innerWidth: </p>
+          <p class="width"></p>
+          <p>window.innerHeight: </p>
+          <p class="height"></p>
+        </section>
+      </section>
+
+      <section class="h2" id="screen">
+        <h2>window.screen</h2>
+        <section class="normal">
+          <h3>normal</h3>
+          <p>screen.width: </p>
+          <p class="width"></p>
+          <p>screen.height: </p>
+          <p class="height"></p>
+        </section>
+        <section class="avail">
+          <h3>avail</h3>
+          <p>screen.availWidth: </p>
+          <p class="width"></p>
+          <p>screen.availHeight: </p>
+          <p class="height"></p>
+        </section>
+      </section>
+
+      <section class="h2" id="rootElem">
+        <h2>rootElemnt</h2>
+        <section class="client">
+          <h3>client</h3>
+          <p>clientWidth: </p>
+          <p class="width"></p>
+          <p>clientHeight: </p>
+          <p class="height"></p>
+        </section>
+        <section class="offset">
+          <h3>offset</h3>
+          <p>offsetWidth: </p>
+          <p class="width"></p>
+          <p>offsetHeight: </p>
+          <p class="height"></p>
+        </section>
+        <section class="scroll">
+          <h3>scroll</h3>
+          <p>scrollWidth: </p>
+          <p class="width"></p>
+          <p>scrollHeight: </p>
+          <p class="height"></p>
+        </section>
+      </section>
+
+      <section class="h2" id="docElem">
+        <h2>documentElemnt</h2>
+        <section class="client">
+          <h3>client</h3>
+          <p>clientWidth: </p>
+          <p class="width"></p>
+          <p>clientHeight: </p>
+          <p class="height"></p>
+        </section>
+        <section class="offset">
+          <h3>offset</h3>
+          <p>offsetWidth: </p>
+          <p class="width"></p>
+          <p>offsetHeight: </p>
+          <p class="height"></p>
+        </section>
+        <section class="scroll">
+          <h3>scroll</h3>
+          <p>scrollWidth: </p>
+          <p class="width"></p>
+          <p>scrollHeight: </p>
+          <p class="height"></p>
+        </section>
+      </section>
+    </main>
+    <section class="history">
+      <!-- TODO: 履歴リストに追加する -->
+      <h2>history</h2>
+      <ul class="list"></ul>
+    </section>
+    <script type="text/javascript">
+      let prevSizes;
+      const getSizes = () => {
+        const w = window
+        const s = w.screen
+        const d = document.documentElement;
+        const r = document.getElementById('root');
+
+        return {
+          docElem: {
+            client: [d.clientWidth, d.clientHeight],
+            offset: [d.offsetWidth, d.offsetHeight],
+            scroll: [d.scrollWidth, d.scrollHeight],
+          },
+          rootElem: {
+            client: [r.clientWidth, r.clientHeight],
+            offset: [r.offsetWidth, r.offsetHeight],
+            scroll: [r.scrollWidth, r.scrollHeight],
+          },
+          screen: {
+            normal: [s.width, s.height],
+            avail: [s.availWidth, s.availHeight]
+          },
+          window: {
+            outer: [w.outerWidth, w.outerHeight],
+            inner: [w.innerWidth, w.innerHeight]
+          }
+        }
+      }
+
+      // https://gist.github.com/Yimiprod/7ee176597fef230d1451
+      function difference(object, base) {
+        function changes(object, base) {
+          return _.transform(object, function (result, value, key) {
+            if (!_.isEqual(value, base[key])) {
+              result[key] = (_.isObject(value) && _.isObject(base[key])) ? changes(value, base[key]) : value;
+            }
+          });
+        }
+        return changes(object, base);
+      }
+
+      const appendContents = () => {
+        const sizes = getSizes();
+        const {
+          rootElem: { client: rc, offset: roff, scroll: rs },
+          docElem: { client: dc, offset: doff, scroll: ds },
+          screen: { normal, avail },
+          window: { outer, inner }
+        } = sizes;
+        document.querySelector("#rootElem .client .width").textContent = rc[0];
+        document.querySelector("#rootElem .client .height").textContent = rc[1];
+        document.querySelector("#rootElem .offset .width").textContent = roff[0];
+        document.querySelector("#rootElem .offset .height").textContent = roff[1];
+        document.querySelector("#rootElem .scroll .width").textContent = rs[0];
+        document.querySelector("#rootElem .scroll .height").textContent = rs[1];
+        document.querySelector("#docElem .client .width").textContent = dc[0];
+        document.querySelector("#docElem .client .height").textContent = dc[1];
+        document.querySelector("#docElem .offset .width").textContent = doff[0];
+        document.querySelector("#docElem .offset .height").textContent = doff[1];
+        document.querySelector("#docElem .scroll .width").textContent = ds[0];
+        document.querySelector("#docElem .scroll .height").textContent = ds[1];
+
+        document.querySelector("#screen .normal .width").textContent = normal[0];
+        document.querySelector("#screen .normal .height").textContent = normal[1];
+        document.querySelector("#screen .avail .width").textContent = avail[0];
+        document.querySelector("#screen .avail .height").textContent = avail[1];
+        document.querySelector("#window .outer .width").textContent = outer[0];
+        document.querySelector("#window .outer .height").textContent = outer[1];
+        document.querySelector("#window .inner .width").textContent = inner[0];
+        document.querySelector("#window .inner .height").textContent = inner[1];
+
+        !!prevSizes && console.log(JSON.stringify(difference(sizes, prevSizes)));
+
+        prevSizes = sizes;
+      }
+
+      const resize = () => {
+        appendContents();
+      }
+
+      window.onresize = resize;
+      window.onload = appendContents;
+    </script>
+    <div id="footerNavi">
+      <nav>
+        <div class="navItem">要素</div>
+        <div class="navItem">要素</div>
+        <div class="navItem">要素</div>
+        <div class="navItem">要素</div>
+      </nav>
+    </div>
+  </div>
+</body>
+
+</html>
