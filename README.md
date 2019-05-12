@@ -7,6 +7,8 @@ https://gist.github.com/Yimiprod/7ee176597fef230d1451
 
 https://wemo.tech/470
 
+[【iPhoneX対応】webサイトのSafe Area対応（iOS11.1とiOS11.2）](https://qiita.com/kanakana0330@github/items/6ae264b9da00c326ab1d)
+
 # cssの種類による違い
 
 ```
